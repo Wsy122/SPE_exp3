@@ -18,8 +18,8 @@ https://Wsy122.github.io/SPE_exp3/?id=44&test=true
 
 ### Participant ID Rules
 
-- **userId ≤ 35**: Shape-association group (圆形=自我, 正方形=他人)
-- **userId > 35**: Color-association group (红色=自我, 蓝色=他人)
+- **userId ≤ 40**: Shape-association group (圆形=自我, 正方形=他人)
+- **userId > 40**: Color-association group (红色=自我, 蓝色=他人)
 - **Even userId**: Red/Circle = self
 - **Odd userId**: Blue/Square = self
 

@@ -316,7 +316,7 @@
   };
 
   // 根据 id 的值设置 elements  // 这里好像不需要那么复杂？后面改改
-  if (userId <= 35) {
+  if (userId <= 40) {
     survey_isMatch.survey_json.elements = [
       {
         type: "radiogroup",
@@ -369,7 +369,7 @@
   var group_shape = {
     timeline: [shape],
     conditional_function: function () {
-      if (userId <= 35) {
+      if (userId <= 40) {
         console.log("shape-association");
         return true;
       } else {
@@ -381,7 +381,7 @@
   var group_color = {
     timeline: [color],
     conditional_function: function () {
-      if (userId > 35) {
+      if (userId > 40) {
         console.log("color-association");
         return true;
       } else {
