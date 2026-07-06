@@ -108,7 +108,7 @@ var instruction_taskSeparate_shape = {
     this.stimulus = `
     <div style="text-align: left; color: white; padding: 10px"> 
       <p>现在是形状判断</p>
-      <p>您需要<span style="font-weight: bold">忽略点的运动方向</span>并判断哪种形状的数量更多:</p >
+      <p>您需要<span style="font-weight: bold">忽略点的颜色</span>并判断哪种形状的数量更多:</p >
         <ul>
             <li>大多数为<span style="font-weight: bold">圆形</span>，请按对应文字标签所在侧的键（左侧按<span style="font-weight: bold">"F"键</span>，右侧按<span style="font-weight: bold">"J"键</span>）</li>
             <li>大多数为<span style="font-weight: bold">正方形</span>，请按对应文字标签所在侧的键（左侧按<span style="font-weight: bold">"F"键</span>，右侧按<span style="font-weight: bold">"J"键</span>）</li>
@@ -239,11 +239,11 @@ let single_trial_shape = {
   choices: ["f", "j"],
   correct_choice: function () { return jsPsych.timelineVariable("correct_choice") },
   dot_radius: 4.5,
-  move_distance: 2.4,
+  move_distance: 2.2,
   coherence: 0,
   coherent_direction: 0,
-  aperture_width: 370,
-  aperture_height: 370,
+  aperture_width: 400,
+  aperture_height: 400,
   background_color: "black",
   trial_duration: -1,
   data: {
@@ -302,11 +302,11 @@ let single_trial_color = {
   choices: ["f", "j"],
   correct_choice: function () { return jsPsych.timelineVariable("correct_choice") },
   dot_radius: 4.5,
-  move_distance: 2.4,
+  move_distance: 2.2,
   coherence: 0,
   coherent_direction: 0,
-  aperture_width: 370,
-  aperture_height: 370,
+  aperture_width: 400,
+  aperture_height: 400,
   background_color: "black",
   trial_duration: -1,
   data: {
