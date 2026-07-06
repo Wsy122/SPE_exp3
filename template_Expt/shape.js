@@ -36,7 +36,7 @@ let textMun;
 
 let labelVar = "";
 
-var currentBlock = 1
+var currentBlock = 0
 
 // 条件生成器：将 base condition 扩展为两种标签位置变体，使用 F/J 键
 function generateDiscriminationConditions(baseTrials, labelMap) {
@@ -705,7 +705,7 @@ var instruction_RDK_beginning = {
   response_ends_trial: true,
   choices: " ",
   on_start: function() {
-    currentBlock = 1
+    currentBlock = 0
   },
   data: {
     part: "instruction_RDK_beginning", 
@@ -1138,7 +1138,7 @@ var instruction_color = {
   response_ends_trial: true,
   choices: " ",
   on_start: function() {
-    currentBlock = 1
+    currentBlock = 0
   },
   on_finish: function () {
     document.body.style.backgroundColor = "black";
@@ -1557,6 +1557,7 @@ var instruction_overlap = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: "",
   on_start: function () {
+    currentBlock = 0;
     //document.body.style.backgroundColor = "black";
     if (userId % 2 === 0) {
       this.stimulus = `

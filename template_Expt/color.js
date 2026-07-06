@@ -15,7 +15,7 @@ var color = {
   timeline: []
 };
 
-var currentBlock = 1
+var currentBlock = 0
 
 // Fisher-Yates shuffle：从完整条件数组中随机抽取 n 个 trial（不重复）
 function createPracticeSet(fullArray, n) {
@@ -691,7 +691,7 @@ var instruction_RDK_practice = {
   response_ends_trial: true,
   choices: " ",
   on_start: function() {
-    currentBlock = 1
+    currentBlock = 0
   },
   on_finish: function () {
     document.body.style.backgroundColor = "black";
@@ -1157,6 +1157,7 @@ var instruction_overlap = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: "",
   on_start: function () {
+    currentBlock = 0;
     //document.body.style.backgroundColor = "black";
     if (userId % 2 === 0) {
       this.stimulus = `
@@ -1377,7 +1378,7 @@ var instruction_motion_beginning = {
   response_ends_trial: true,
   choices: " ",
   on_start: function() {
-    currentBlock = 1
+    currentBlock = 0
   },
   data: {
     part: "instruction_RDK_beginning", 
