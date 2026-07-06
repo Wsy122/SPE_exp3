@@ -642,7 +642,7 @@ var rest_rdk = {
   stimulus: function() {
     return `
       <div style="text-align: center; color: white; padding: 35px; font-size: 35px">
-        <p>恭喜您，已完成 ${currentBlock}/4</p>
+        <p>恭喜您，已完成 ${currentBlock + 1}/4</p>
         <p>请先休息 <span id="countdown" style="color:red; font-weight:bold;">30</span> 秒</p>
         <p id="spaceTip" style="margin-top:20px; opacity:0.5;">休息结束后可按空格键继续</p>
       </div>
