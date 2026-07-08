@@ -320,9 +320,9 @@ var match_RDK = {
   coherent_direction: 0,
   coherence: 0,
   dot_radius: 4.5, 
-  move_distance: 2.2, 
-  aperture_width: 400,
-  aperture_height: 400,
+  move_distance: 2.4, 
+  aperture_width: 370,
+  aperture_height: 370,
   // aperture_center_x: 960,
   aperture_center_y: 300, //越小越往上
   background_color: "black",
@@ -559,8 +559,7 @@ var practice_block_selfLeft = {
     {
       timeline: [fixation, match_RDK, feedbackTrial_match],
       timeline_variables: conditions_match_selfLeft,
-      repetitions: 4,
-      //repetitions: window.match_pract_mun, 
+      repetitions: window.testMode ? 1 : 4,
       randomize_order: true
     },
     if_practiceAgain,
@@ -570,6 +569,7 @@ var practice_block_selfLeft = {
     console.log('window.match_pract_mun: ', window.match_pract_mun)
   },
   loop_function: function(){
+    if (window.testMode) return false;
     var data = jsPsych.data.get().last(1).values()[0];
     if (jsPsych.pluginAPI.compareKeys(data.response, "q")) {
       return true;
@@ -585,8 +585,7 @@ var practice_block_selfRight = {
     {
       timeline: [fixation, match_RDK, feedbackTrial_match],
       timeline_variables: conditions_match_selfRight,
-      repetitions: 4,
-      //repetitions: window.match_pract_mun,
+      repetitions: window.testMode ? 1 : 4,
       randomize_order: true
     },
     if_practiceAgain,
@@ -596,6 +595,7 @@ var practice_block_selfRight = {
     console.log('window.match_pract_mun: ', window.match_pract_mun)
   },
   loop_function: function(){
+    if (window.testMode) return false;
     var data = jsPsych.data.get().last(1).values()[0];
     if (jsPsych.pluginAPI.compareKeys(data.response, "q")) {
       return true;
@@ -831,9 +831,9 @@ var RDK_discrimination = {
   dot_shape: function () { return jsPsych.timelineVariable("dot_shape") },
   dot_shape_ratio: function () { return jsPsych.timelineVariable("dot_shape_ratio") },
   dot_radius: 4.5,
-  move_distance: 2.2,
-  aperture_width: 400,
-  aperture_height: 400,
+  move_distance: 2.4,
+  aperture_width: 370,
+  aperture_height: 370,
   // aperture_center_x: 960,
   // aperture_center_y: 330,
   background_color: "black",
@@ -999,77 +999,87 @@ var practice_block_shape = {
 };
 
 var formal_block_shape_selfLeft = {
-  timeline: [
-    instruction_RDK_formal_beginning,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_shape_selfLeft,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_shape_selfLeft,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_shape_selfLeft,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_shape_selfLeft,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-  ],
+  timeline: function() {
+    var t = [
+      instruction_RDK_formal_beginning,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_shape_selfLeft,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+    ];
+    if (!window.testMode) t.push(
+      rest_rdk,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_shape_selfLeft,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+      rest_rdk,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_shape_selfLeft,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+      rest_rdk,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_shape_selfLeft,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+    );
+    return t;
+  },
 };
 
 var formal_block_shape_selfRight = {
-  timeline: [
-    instruction_RDK_formal_beginning,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_shape_selfRight,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_shape_selfRight,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_shape_selfRight,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_shape_selfRight,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-  ],
+  timeline: function() {
+    var t = [
+      instruction_RDK_formal_beginning,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_shape_selfRight,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+    ];
+    if (!window.testMode) t.push(
+      rest_rdk,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_shape_selfRight,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+      rest_rdk,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_shape_selfRight,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+      rest_rdk,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_shape_selfRight,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+    );
+    return t;
+  },
 };
 
 var formal_shape_selfLeft = {
@@ -1414,85 +1424,95 @@ var practice_block_color = {
 // };
 
 var formal_block_color_selfLeft = {
-  timeline: [
-    instruction_color,
-    // 子块1: groupA
-    {
-      timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfLeft_groupA,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    // 子块2: groupB
-    {
-      timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfLeft_groupB,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    // 子块3: groupA
-    {
-      timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfLeft_groupA,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    // 子块4: groupB
-    {
-      timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfLeft_groupB,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-  ],
+  timeline: function() {
+    var t = [
+      instruction_color,
+      // 子块1: groupA
+      {
+        timeline: [fixation, RDK_color],
+        timeline_variables: conditions_color_selfLeft_groupA,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+    ];
+    if (!window.testMode) t.push(
+      rest_rdk,
+      // 子块2: groupB
+      {
+        timeline: [fixation, RDK_color],
+        timeline_variables: conditions_color_selfLeft_groupB,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+      rest_rdk,
+      // 子块3: groupA
+      {
+        timeline: [fixation, RDK_color],
+        timeline_variables: conditions_color_selfLeft_groupA,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+      rest_rdk,
+      // 子块4: groupB
+      {
+        timeline: [fixation, RDK_color],
+        timeline_variables: conditions_color_selfLeft_groupB,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+    );
+    return t;
+  },
 };
 
 var formal_block_color_selfRight = {
-  timeline: [
-    instruction_color,
-    // 子块1: groupA
-    {
-      timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfRight_groupA,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    // 子块2: groupB
-    {
-      timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfRight_groupB,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    // 子块3: groupA
-    {
-      timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfRight_groupA,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    // 子块4: groupB
-    {
-      timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfRight_groupB,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-  ],
+  timeline: function() {
+    var t = [
+      instruction_color,
+      // 子块1: groupA
+      {
+        timeline: [fixation, RDK_color],
+        timeline_variables: conditions_color_selfRight_groupA,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+    ];
+    if (!window.testMode) t.push(
+      rest_rdk,
+      // 子块2: groupB
+      {
+        timeline: [fixation, RDK_color],
+        timeline_variables: conditions_color_selfRight_groupB,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+      rest_rdk,
+      // 子块3: groupA
+      {
+        timeline: [fixation, RDK_color],
+        timeline_variables: conditions_color_selfRight_groupA,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+      rest_rdk,
+      // 子块4: groupB
+      {
+        timeline: [fixation, RDK_color],
+        timeline_variables: conditions_color_selfRight_groupB,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+    );
+    return t;
+  },
 };
 
 // 下面是条件判断，可能有点冗余，后面再优化
@@ -1665,77 +1685,87 @@ var practice_block_overlap = {
 
 // 正式阶段
 var formal_block_overlap_selfLeft = {
-  timeline: [
-    instruction_RDK_formal_beginning,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_overlap_selfLeft,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_overlap_selfLeft,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_overlap_selfLeft,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_overlap_selfLeft,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-  ],
+  timeline: function() {
+    var t = [
+      instruction_RDK_formal_beginning,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_overlap_selfLeft,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+    ];
+    if (!window.testMode) t.push(
+      rest_rdk,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_overlap_selfLeft,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+      rest_rdk,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_overlap_selfLeft,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+      rest_rdk,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_overlap_selfLeft,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+    );
+    return t;
+  },
 };
 
 var formal_block_overlap_selfRight = {
-  timeline: [
-    instruction_RDK_formal_beginning,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_overlap_selfRight,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_overlap_selfRight,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_overlap_selfRight,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_overlap_selfRight,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-  ],
+  timeline: function() {
+    var t = [
+      instruction_RDK_formal_beginning,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_overlap_selfRight,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+    ];
+    if (!window.testMode) t.push(
+      rest_rdk,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_overlap_selfRight,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+      rest_rdk,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_overlap_selfRight,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+      rest_rdk,
+      {
+        timeline: [fixation, RDK_discrimination],
+        timeline_variables: conditions_overlap_selfRight,
+        repetitions: 1,
+        randomize_order: true
+      },
+      feedbackBlock_RDK,
+    );
+    return t;
+  },
 };
 
 var formal_overlap_selfLeft = {
