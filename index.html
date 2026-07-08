@@ -53,7 +53,6 @@
   const urlParams = new URLSearchParams(queryString);
   // 获取参数值
   const testMode = urlParams.get('test')=="true"?true:false
-  window.testMode = testMode
   const idParam = urlParams.get('id');
   if (!idParam || isNaN(parseInt(idParam))) {
     alert('Missing required parameter: id');
@@ -403,7 +402,7 @@
   main_timeline = [preload, fullScreen,  //card, resized_stimulus, 
     information, color_test, 
     beginning, 
-    //getThreshold, 
+    getThreshold, 
     assign_group, 
     survey_isMatch, end]
 
