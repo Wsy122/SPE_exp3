@@ -66,7 +66,7 @@ function generateDiscriminationConditions(baseTrials, labelMap) {
   return result;
 }
 
-// 生成器：在形状辨别条件上正交增加颜色维度难度（4种颜色组合）
+// 生成器：在形状辨别条件上正交增加颜色维度难度（2种颜色组合，仅 easy）
 function addColorDifficulty(baseTrials) {
   var result = [];
   baseTrials.forEach(function(trial) {
@@ -80,29 +80,17 @@ function addColorDifficulty(baseTrials) {
       target_color_proportion: 0.59,
       dot_color_final: ["hsl(225, 50%, 50%)", "hsl(0, 50%, 50%)"]
     }));
-    // color hard, red majority
-    result.push(Object.assign({}, trial, {
-      target_color_proportion: 0.54,
-      dot_color_final: ["hsl(0, 50%, 50%)", "hsl(225, 50%, 50%)"]
-    }));
-    // color hard, blue majority
-    result.push(Object.assign({}, trial, {
-      target_color_proportion: 0.54,
-      dot_color_final: ["hsl(225, 50%, 50%)", "hsl(0, 50%, 50%)"]
-    }));
   });
   return result;
 }
 
-// 生成器：在颜色辨别条件上正交增加形状维度难度（4种形状组合）
+// 生成器：在颜色辨别条件上正交增加形状维度难度（2种形状组合，仅 easy）
 // shapeToSelf: 若提供，则根据 dot_shape 设置 association（"circle"=self 或 "square"=self）
 function addShapeDifficulty(baseTrials, shapeToSelf) {
   var result = [];
   var shapeVariants = [
     { dot_shape_ratio: 0.59, dot_shape: "circle" },
-    { dot_shape_ratio: 0.59, dot_shape: "square" },
-    { dot_shape_ratio: 0.54, dot_shape: "circle" },
-    { dot_shape_ratio: 0.54, dot_shape: "square" }
+    { dot_shape_ratio: 0.59, dot_shape: "square" }
   ];
   baseTrials.forEach(function(trial) {
     shapeVariants.forEach(function(variant) {
@@ -116,7 +104,7 @@ function addShapeDifficulty(baseTrials, shapeToSelf) {
   return result;
 }
 
-// 定义一个函数来处理条件匹配和更新coherence值
+// 定义一个函数来处理条件匹配和更新coherence值（仅 easy）
 function updateCoherence(arr) {
   for (let i in arr) {
     const coherence = arr[i].coherence;
@@ -125,16 +113,10 @@ function updateCoherence(arr) {
       case 0.20:
         arr[i].coherence = window.coherence[1];
         break;
-      case 0.16:
-        arr[i].coherence = window.coherence[3];
-        break;
     }
     switch (proportion) {
       case 0.59:
         arr[i].target_color_proportion = window.colorProportion[1];
-        break;
-      case 0.54:
-        arr[i].target_color_proportion = window.colorProportion[3];
         break;
     }
     // 更新 shape 比例（如果存在）
@@ -143,9 +125,6 @@ function updateCoherence(arr) {
       switch (shapeRatio) {
         case 0.59:
           arr[i].dot_shape_ratio = window.proportion[1];
-          break;
-        case 0.54:
-          arr[i].dot_shape_ratio = window.proportion[3];
           break;
       }
     }
@@ -274,33 +253,19 @@ fixation = {
 // 2 种不同的难度 * 2 种关联类型 * 2 种匹配类型 = 8种条件
 
 let conditions_match_selfLeft = [
-  // circle=self, match
+  // easy only (删除 hard 水平)
   { dot_shape_ratio: 0.59, dot_shape: "circle", label: "我", correct_choice: "f", isMatch: "match", association: "self", difficulty: "easy" },
-  { dot_shape_ratio: 0.54, dot_shape: "circle", label: "我", correct_choice: "f", isMatch: "match", association: "self", difficulty: "hard" },
-  // circle=self, mismatch → label is "他" but majority is circle(=self)
   { dot_shape_ratio: 0.59, dot_shape: "circle", label: "他", correct_choice: "j", isMatch: "mismatch", association: "self", difficulty: "easy" },
-  { dot_shape_ratio: 0.54, dot_shape: "circle", label: "他", correct_choice: "j", isMatch: "mismatch", association: "self", difficulty: "hard" },
-  // square=other, match
   { dot_shape_ratio: 0.59, dot_shape: "square", label: "他", correct_choice: "f", isMatch: "match", association: "other", difficulty: "easy" },
-  { dot_shape_ratio: 0.54, dot_shape: "square", label: "他", correct_choice: "f", isMatch: "match", association: "other", difficulty: "hard" },
-  // square=other, mismatch → label is "我" but majority is square(=other)
-  { dot_shape_ratio: 0.59, dot_shape: "square", label: "我", correct_choice: "j", isMatch: "mismatch", association: "other", difficulty: "easy" },
-  { dot_shape_ratio: 0.54, dot_shape: "square", label: "我", correct_choice: "j", isMatch: "mismatch", association: "other", difficulty: "hard" }
+  { dot_shape_ratio: 0.59, dot_shape: "square", label: "我", correct_choice: "j", isMatch: "mismatch", association: "other", difficulty: "easy" }
 ];
 
 let conditions_match_selfRight = [
-  // square=self, match
+  // easy only
   { dot_shape_ratio: 0.59, dot_shape: "square", label: "我", correct_choice: "f", isMatch: "match", association: "self", difficulty: "easy" },
-  { dot_shape_ratio: 0.54, dot_shape: "square", label: "我", correct_choice: "f", isMatch: "match", association: "self", difficulty: "hard" },
-  // square=self, mismatch
   { dot_shape_ratio: 0.59, dot_shape: "square", label: "他", correct_choice: "j", isMatch: "mismatch", association: "self", difficulty: "easy" },
-  { dot_shape_ratio: 0.54, dot_shape: "square", label: "他", correct_choice: "j", isMatch: "mismatch", association: "self", difficulty: "hard" },
-  // circle=other, match
   { dot_shape_ratio: 0.59, dot_shape: "circle", label: "他", correct_choice: "f", isMatch: "match", association: "other", difficulty: "easy" },
-  { dot_shape_ratio: 0.54, dot_shape: "circle", label: "他", correct_choice: "f", isMatch: "match", association: "other", difficulty: "hard" },
-  // circle=other, mismatch
-  { dot_shape_ratio: 0.59, dot_shape: "circle", label: "我", correct_choice: "j", isMatch: "mismatch", association: "other", difficulty: "easy" },
-  { dot_shape_ratio: 0.54, dot_shape: "circle", label: "我", correct_choice: "j", isMatch: "mismatch", association: "other", difficulty: "hard" }
+  { dot_shape_ratio: 0.59, dot_shape: "circle", label: "我", correct_choice: "j", isMatch: "mismatch", association: "other", difficulty: "easy" }
 ];
 
 // 设置匹配任务的主要刺激（形状关联）
@@ -465,37 +430,27 @@ var feedbackTrial_match = {
 
 //计算整个练习阶段的总体正确率
 //计算 32 个试次的反应数，挑出正确的试次数，计算准确率 
-//如果整体正确率未达到 85% 以及上，则让被试继续练习
+//如果整体正确率未达到 85%，告知被试继续下一轮测试
 
-var instruction_continuePractice = {
+var instruction_retry_block = {
   type: jsPsychHtmlKeyboardResponse,
-  stimulus: "",
-  on_start: function() {
-    if (userId % 2 === 0) {
-      this.stimulus =  `
-      <div style="text-align: left; color: white; padding: 10px">  
-        <p>您的正确率未达 85% ，不能进入下一阶段</p >
-        <p >您的任务是：判断散点图的主要形状与文字标签是否匹配 。大多数为圆形代表你自己；大多数为正方形代表他人。</p>
-        <p >如果二者<span style="color: hsl(135, 50%, 50%)">匹配</span>，请按 <span style="color: hsl(135, 50%, 50%)">"F" 键</span></p>
-        <p >如果二者<span style="color: red">不匹配</span>，请按 <span style="color: red">"J" 键</span></p>
-        <p>请按 "Q" 键继续练习</p >
-      </div>`;
-    } else {
-      this.stimulus =  `
-      <div style="text-align: left; color: white; padding: 10px">  
-        <p>您的正确率未达 85% ，不能进入下一阶段</p >
-        <p >您的任务是：判断散点图的主要形状与文字标签是否匹配 。大多数为正方形代表你自己；大多数为圆形代表他人。</p>
-        <p >如果二者<span style="color: hsl(135, 50%, 50%)">匹配</span>，请按 <span style="color: hsl(135, 50%, 50%)">"F" 键</span></p>
-        <p >如果二者<span style="color: red">不匹配</span>，请按 <span style="color: red">"J" 键</span></p>
-        <p>请按 "Q" 键继续练习</p >
-      </div>`;
-    }
+  stimulus: function() {
+    var nextRound = match_pract_block + 2; // Block N 完成后 → 第 N+2 轮
+    return `
+    <div style="text-align: center; color: white; padding: 30px; font-size: 30px">
+      <p>您的正确率未达到 85% ，不能进入下一阶段</p>
+      <p>请继续进行第 ${nextRound} 轮测试</p>
+      <p>请按空格键继续</p>
+    </div>`;
   },
   response_ends_trial: true,
-  choices: "q",
+  choices: " ",
+  on_start: function() {
+    document.body.style.backgroundColor = "black";
+  },
   data: {
-    part: "instruction_continuePractice", 
-  }
+    part: "instruction_retry_block"
+  },
 };
 
 //如果达到70%及以上，则结束练习
@@ -517,92 +472,147 @@ var instruction_practiceEnd = {
   },
 };
 
-//if_practiceAgain 用于判断是否呈现 feedback_continuePractice
+//========== 匹配练习（Block1无要求 + Block2需85%，最多5个block） ==========
+// 每次 loop 只跑 1 个 block（32 trials），由 loop_function 控制流程
+var match_pract_block = 0;
+var match_pract_retries = 0;
 
-var if_practiceAgain = {
-  timeline: [instruction_continuePractice],
-  conditional_function: function () { 
-    var trials = jsPsych.data.get().filter({task: 'response'}).last(32)
-    var correct_trials = trials.filter({correct: true});
-    var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
-    console.log({ accuracy: accuracy});
-    if (accuracy >= window.pract_pass_rate) {
-      return false;//达标就skip掉instruction_continuePractice这一段
-    } else if (accuracy < window.pract_pass_rate) { //没达标呈现instruction_continuePractice
-      return true;
-    }
-  }
+// Block1→Block2 过渡提示屏：告知被试进入下一个 block 且有正确率要求
+var instruction_block2_enter = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: `
+  <div style="text-align: left; color: white; padding: 10px">
+    <p>第一组已完成！</p>
+    <p>即将进入下一组</p>
+    <p style="color: hsl(50, 80%, 60%); font-weight: bold;">注意：从本组测试开始，正确率需达到 85% 及以上才能进入后面的正式任务</p>
+    <p>请按空格键继续</p>
+  </div>
+  `,
+  response_ends_trial: true,
+  choices: " ",
+  on_start: function() {
+    document.body.style.backgroundColor = "black";
+  },
+  data: {
+    part: "instruction_block2_enter"
+  },
 };
-
-//if_endPractice 用于判断是否呈现 instruction_practiceEnd
-
-var if_endPractice = {
-  timeline: [instruction_practiceEnd],
-  conditional_function: function () {
-    var trials = jsPsych.data.get().filter({task: 'response'}).last(32) //这里的数量视具体情况而定
-    var correct_trials = trials.filter({correct: true});
-    var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
-    console.log({ accuracy: accuracy});
-    if (accuracy >= window.pract_pass_rate) {
-      return true;//达标呈现 instruction_practiceEnd
-    } else if (accuracy < window.pract_pass_rate) { 
-      return false;
-    }
-  }
-};
-
-//--------这里是练习
 
 var practice_block_selfLeft = {
   timeline: [
+    // 指导语移到循环外面，确保只显示一次且不影响循环内 trial 的执行
     instruction_match_practice,
     {
-      timeline: [fixation, match_RDK, feedbackTrial_match],
-      timeline_variables: conditions_match_selfLeft,
-      repetitions: 4,
-      //repetitions: window.match_pract_mun, 
-      randomize_order: true
-    },
-    if_practiceAgain,
-    if_endPractice,
-  ],
-  on_start: function(){
-    console.log('window.match_pract_mun: ', window.match_pract_mun)
-  },
-  loop_function: function(){
-    var data = jsPsych.data.get().last(1).values()[0];
-    if (jsPsych.pluginAPI.compareKeys(data.response, "q")) {
-      return true;
-    } else {
-      return false;
+      timeline: [
+        // 1个block的trial（32 trials）
+        {
+          timeline: [fixation, match_RDK, feedbackTrial_match],
+          timeline_variables: conditions_match_selfLeft,
+          repetitions: 8,
+          randomize_order: true
+        },
+        // Block1 完成后显示过渡提示（match_pract_block 在 loop_function 中才递增，故此时仍为 0）
+        {
+          timeline: [instruction_block2_enter],
+          conditional_function: function() { return match_pract_block === 0; }
+        },
+        // Block 2+ 完成后：达标显示完成提示，失败显示重试提示（继续下一轮）
+        {
+          timeline: [instruction_practiceEnd],
+          conditional_function: function() {
+            if (match_pract_block < 1) return false;
+            var trials = jsPsych.data.get().filter({task: 'response'}).last(32);
+            var correct_trials = trials.filter({correct: true});
+            return Math.round(correct_trials.count() / trials.count() * 100) >= window.pract_pass_rate;
+          }
+        },
+        {
+          timeline: [instruction_retry_block],
+          conditional_function: function() {
+            if (match_pract_block < 1) return false;
+            var trials = jsPsych.data.get().filter({task: 'response'}).last(32);
+            var correct_trials = trials.filter({correct: true});
+            return Math.round(correct_trials.count() / trials.count() * 100) < window.pract_pass_rate;
+          }
+        },
+      ],
+      loop_function: function () {
+        match_pract_block++;
+        if (match_pract_block === 1) {
+          // Block1 刚完成 → 继续到 Block 2
+          return true;
+        }
+        // Block 2+ 完成，检查正确率
+        var trials = jsPsych.data.get().filter({task: 'response'}).last(32);
+        var correct_trials = trials.filter({correct: true});
+        var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+        console.log("[match_practice] Block", match_pract_block, "accuracy:", accuracy);
+        if (accuracy >= window.pract_pass_rate) {
+          return false;
+        }
+        // 未达标
+        match_pract_retries++;
+        if (match_pract_retries >= 4) {
+          alert("多次尝试后仍未达到85%的正确率，请联系主试。");
+          return false;
+        }
+        return true;
+      },
     }
-  },
+  ],
 };
 
 var practice_block_selfRight = {
   timeline: [
     instruction_match_practice,
     {
-      timeline: [fixation, match_RDK, feedbackTrial_match],
-      timeline_variables: conditions_match_selfRight,
-      repetitions: 4,
-      //repetitions: window.match_pract_mun,
-      randomize_order: true
-    },
-    if_practiceAgain,
-    if_endPractice,
-  ],
-  on_start: function(){
-    console.log('window.match_pract_mun: ', window.match_pract_mun)
-  },
-  loop_function: function(){
-    var data = jsPsych.data.get().last(1).values()[0];
-    if (jsPsych.pluginAPI.compareKeys(data.response, "q")) {
-      return true;
-    } else {
-      return false;
+      timeline: [
+        {
+          timeline: [fixation, match_RDK, feedbackTrial_match],
+          timeline_variables: conditions_match_selfRight,
+          repetitions: 8,
+          randomize_order: true
+        },
+        {
+          timeline: [instruction_block2_enter],
+          conditional_function: function() { return match_pract_block === 0; }
+        },
+        {
+          timeline: [instruction_practiceEnd],
+          conditional_function: function() {
+            if (match_pract_block < 1) return false;
+            var trials = jsPsych.data.get().filter({task: 'response'}).last(32);
+            var correct_trials = trials.filter({correct: true});
+            return Math.round(correct_trials.count() / trials.count() * 100) >= window.pract_pass_rate;
+          }
+        },
+        {
+          timeline: [instruction_retry_block],
+          conditional_function: function() {
+            if (match_pract_block < 1) return false;
+            var trials = jsPsych.data.get().filter({task: 'response'}).last(32);
+            var correct_trials = trials.filter({correct: true});
+            return Math.round(correct_trials.count() / trials.count() * 100) < window.pract_pass_rate;
+          }
+        },
+      ],
+      loop_function: function () {
+        match_pract_block++;
+        if (match_pract_block === 1) return true;
+        var trials = jsPsych.data.get().filter({task: 'response'}).last(32);
+        var correct_trials = trials.filter({correct: true});
+        var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+        console.log("[match_practice] Block", match_pract_block, "accuracy:", accuracy);
+        if (accuracy >= window.pract_pass_rate) return false;
+        match_pract_retries++;
+        if (match_pract_retries >= 4) {
+          alert("多次尝试后仍未达到85%的正确率，请联系主试。");
+          return false;
+        }
+        return true;
+      },
     }
-  },
+  ],
 };
 
 var practice_selfLeft = {
@@ -642,7 +652,7 @@ var rest_rdk = {
   stimulus: function() {
     return `
       <div style="text-align: center; color: white; padding: 35px; font-size: 35px">
-        <p>恭喜您，已完成 ${currentBlock + 1}/4</p>
+        <p>恭喜您，已完成 ${currentBlock + 1}/2</p>
         <p>请先休息 <span id="countdown" style="color:red; font-weight:bold;">30</span> 秒</p>
         <p id="spaceTip" style="margin-top:20px; opacity:0.5;">休息结束后可按空格键继续</p>
       </div>
@@ -775,28 +785,17 @@ var instruction_RDK_formal_beginning = {
 // selfLeft（userId偶数）：大多数点为圆形=自我，大多数点为正方形=他人
 // 核心条件（仅目标维度=形状），通过 addColorDifficulty 正交增加颜色维度难度
 var base_shape_selfLeft_core = [
-  // association=self, easy, circle
+  // easy only
   { dot_shape_ratio: 0.59, dot_shape: "circle", difficulty: "easy", association: "self",correct_value: "circle", task_type: "relevant", data_part: "RDK_shape" },
-  // association=self, hard, circle
-  { dot_shape_ratio: 0.54, dot_shape: "circle", difficulty: "hard", association: "self",correct_value: "circle", task_type: "relevant", data_part: "RDK_shape" },
-  // association=other, easy, square
-  { dot_shape_ratio: 0.59, dot_shape: "square", difficulty: "easy", association: "other",correct_value: "square", task_type: "relevant", data_part: "RDK_shape" },
-  // association=other, hard, square
-  { dot_shape_ratio: 0.54, dot_shape: "square", difficulty: "hard", association: "other",correct_value: "square", task_type: "relevant", data_part: "RDK_shape" }
+  { dot_shape_ratio: 0.59, dot_shape: "square", difficulty: "easy", association: "other",correct_value: "square", task_type: "relevant", data_part: "RDK_shape" }
 ];
 var base_shape_selfLeft = addColorDifficulty(base_shape_selfLeft_core);
 
 // selfRight（userId奇数）：大多数点为正方形=自我，大多数点为圆形=他人
-// 核心条件（仅目标维度=形状），通过 addColorDifficulty 正交增加颜色维度难度
 var base_shape_selfRight_core = [
-  // association=self, easy, square
+  // easy only
   { dot_shape_ratio: 0.59, dot_shape: "square", difficulty: "easy", association: "self",correct_value: "square", task_type: "relevant", data_part: "RDK_shape" },
-  // association=self, hard, square
-  { dot_shape_ratio: 0.54, dot_shape: "square", difficulty: "hard", association: "self",correct_value: "square", task_type: "relevant", data_part: "RDK_shape" },
-  // association=other, easy, circle
-  { dot_shape_ratio: 0.59, dot_shape: "circle", difficulty: "easy", association: "other",correct_value: "circle", task_type: "relevant", data_part: "RDK_shape" },
-  // association=other, hard, circle
-  { dot_shape_ratio: 0.54, dot_shape: "circle", difficulty: "hard", association: "other",correct_value: "circle", task_type: "relevant", data_part: "RDK_shape" }
+  { dot_shape_ratio: 0.59, dot_shape: "circle", difficulty: "easy", association: "other",correct_value: "circle", task_type: "relevant", data_part: "RDK_shape" }
 ];
 var base_shape_selfRight = addColorDifficulty(base_shape_selfRight_core);
 
@@ -850,10 +849,8 @@ var RDK_discrimination = {
   },
   on_start: function() {
     // 统一更新所有条件数组的 coherence/proportion
-    updateCoherence(conditions_color_selfLeft_groupA);
-    updateCoherence(conditions_color_selfLeft_groupB);
-    updateCoherence(conditions_color_selfRight_groupA);
-    updateCoherence(conditions_color_selfRight_groupB);
+    updateCoherence(conditions_color_selfLeft);
+    updateCoherence(conditions_color_selfRight);
     updateCoherence(conditions_shape_selfLeft);
     updateCoherence(conditions_shape_selfRight);
     if (typeof conditions_overlap_selfLeft !== 'undefined') {
@@ -913,7 +910,7 @@ var feedbackBlock_RDK = {
   type: jsPsychHtmlKeyboardResponse,
   trial_duration: 3000,
   stimulus: function() {
-    var trials = jsPsych.data.get().filter({task: 'response'}).last(32)
+    var trials = jsPsych.data.get().filter({task: 'response'}).last(64)
     var correct_trials = trials.filter({correct: true});
     var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
     var rt = Math.round(trials.select('rt').mean());
@@ -924,7 +921,7 @@ var feedbackBlock_RDK = {
 
 
 // 形状辨别任务的练习和正式block
-var practiceSet_shape_selfLeft = createPracticeSet(conditions_shape_selfLeft, 24);
+var practiceSet_shape_selfLeft = createPracticeSet(conditions_shape_selfLeft, 8);
 var practice_block_shape_selfLeft = {
   timeline: [
     instruction_RDK_beginning,
@@ -932,7 +929,7 @@ var practice_block_shape_selfLeft = {
     {
       timeline: [fixation, RDK_discrimination, feedbackTrial],
       timeline_variables: practiceSet_shape_selfLeft,
-      repetitions: 1,
+      repetitions: 2,
       randomize_order: true
     },
     instruction_RDK_practice_end
@@ -947,7 +944,7 @@ var practice_block_shape_selfLeft = {
   },
 };
 
-var practiceSet_shape_selfRight = createPracticeSet(conditions_shape_selfRight, 24);
+var practiceSet_shape_selfRight = createPracticeSet(conditions_shape_selfRight, 8);
 var practice_block_shape_selfRight = {
   timeline: [
     instruction_RDK_beginning,
@@ -955,7 +952,7 @@ var practice_block_shape_selfRight = {
     {
       timeline: [fixation, RDK_discrimination, feedbackTrial],
       timeline_variables: practiceSet_shape_selfRight,
-      repetitions: 1,
+      repetitions: 2,
       randomize_order: true
     },
     instruction_RDK_practice_end
@@ -1001,34 +998,20 @@ var practice_block_shape = {
 var formal_block_shape_selfLeft = {
   timeline: [
     instruction_RDK_formal_beginning,
+    // Block 1
     {
       timeline: [fixation, RDK_discrimination],
       timeline_variables: conditions_shape_selfLeft,
-      repetitions: 1,
+      repetitions: 8,
       randomize_order: true
     },
     feedbackBlock_RDK,
     rest_rdk,
+    // Block 2
     {
       timeline: [fixation, RDK_discrimination],
       timeline_variables: conditions_shape_selfLeft,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_shape_selfLeft,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_shape_selfLeft,
-      repetitions: 1,
+      repetitions: 8,
       randomize_order: true
     },
     feedbackBlock_RDK,
@@ -1038,34 +1021,20 @@ var formal_block_shape_selfLeft = {
 var formal_block_shape_selfRight = {
   timeline: [
     instruction_RDK_formal_beginning,
+    // Block 1
     {
       timeline: [fixation, RDK_discrimination],
       timeline_variables: conditions_shape_selfRight,
-      repetitions: 1,
+      repetitions: 8,
       randomize_order: true
     },
     feedbackBlock_RDK,
     rest_rdk,
+    // Block 2
     {
       timeline: [fixation, RDK_discrimination],
       timeline_variables: conditions_shape_selfRight,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_shape_selfRight,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_shape_selfRight,
-      repetitions: 1,
+      repetitions: 8,
       randomize_order: true
     },
     feedbackBlock_RDK,
@@ -1153,7 +1122,7 @@ var instruction_color = {
 
 //整体颜色判断任务的不同条件(颜色和运动方向都分容易和困难， 方向越一致干扰越大)
 
-// 颜色辨别任务基础条件（任务无关），目标=颜色，通过 addShapeDifficulty 正交增加形状维度难度
+// 颜色辨别任务基础条件（任务无关），目标=颜色，通过 addShapeDifficulty 正交增加形状维度难度（仅 easy）
 // 注意：association 由 addShapeDifficulty 根据形状自动设置，不在core中预定义
 var base_color_selfLeft_core = [
   // target=color, easy, red-majority
@@ -1161,140 +1130,50 @@ var base_color_selfLeft_core = [
     coherent_direction: 0, coherence: 0, correct_value: "red", task_type: "irrelevant", data_part: "RDK_color" },
   // target=color, easy, blue-majority
   { target_color_proportion: 0.59, dot_color_final: ["hsl(225, 50%, 50%)", "hsl(0, 50%, 50%)"], difficulty: "easy",
-    coherent_direction: 0, coherence: 0, correct_value: "blue", task_type: "irrelevant", data_part: "RDK_color" },
-  // target=color, hard, red-majority
-  { target_color_proportion: 0.54, dot_color_final: ["hsl(0, 50%, 50%)", "hsl(225, 50%, 50%)"], difficulty: "hard",
-    coherent_direction: 0, coherence: 0, correct_value: "red", task_type: "irrelevant", data_part: "RDK_color" },
-  // target=color, hard, blue-majority
-  { target_color_proportion: 0.54, dot_color_final: ["hsl(225, 50%, 50%)", "hsl(0, 50%, 50%)"], difficulty: "hard",
-    coherent_direction: 0, coherence: 0, correct_value: "blue", task_type: "irrelevant", data_part: "RDK_color" },
-  // target=color, easy, red-majority
-  { target_color_proportion: 0.59, dot_color_final: ["hsl(0, 50%, 50%)", "hsl(225, 50%, 50%)"], difficulty: "easy",
-    coherent_direction: 0, coherence: 0, correct_value: "red", task_type: "irrelevant", data_part: "RDK_color" },
-  // target=color, easy, blue-majority
-  { target_color_proportion: 0.59, dot_color_final: ["hsl(225, 50%, 50%)", "hsl(0, 50%, 50%)"], difficulty: "easy",
-    coherent_direction: 0, coherence: 0, correct_value: "blue", task_type: "irrelevant", data_part: "RDK_color" },
-  // target=color, hard, red-majority
-  { target_color_proportion: 0.54, dot_color_final: ["hsl(0, 50%, 50%)", "hsl(225, 50%, 50%)"], difficulty: "hard",
-    coherent_direction: 0, coherence: 0, correct_value: "red", task_type: "irrelevant", data_part: "RDK_color" },
-  // target=color, hard, blue-majority
-  { target_color_proportion: 0.54, dot_color_final: ["hsl(225, 50%, 50%)", "hsl(0, 50%, 50%)"], difficulty: "hard",
     coherent_direction: 0, coherence: 0, correct_value: "blue", task_type: "irrelevant", data_part: "RDK_color" }
 ];
 // selfLeft: circle=self, square=other
 var base_color_selfLeft = addShapeDifficulty(base_color_selfLeft_core, "circle");
+var conditions_color_selfLeft = generateDiscriminationConditions(base_color_selfLeft, {
+  "red": ["红", "蓝"],
+  "blue": ["蓝", "红"]
+});
 
-// 颜色辨别任务基础条件（任务无关），目标=颜色，通过 addShapeDifficulty 正交增加形状维度难度
-// 注意：association 由 addShapeDifficulty 根据形状自动设置，不在core中预定义
+// 颜色辨别任务基础条件（任务无关），目标=颜色，通过 addShapeDifficulty 正交增加形状维度难度（仅 easy）
 var base_color_selfRight_core = [
   // target=color, easy, red-majority
   { target_color_proportion: 0.59, dot_color_final: ["hsl(0, 50%, 50%)", "hsl(225, 50%, 50%)"], difficulty: "easy",
     coherent_direction: 0, coherence: 0, correct_value: "red", task_type: "irrelevant", data_part: "RDK_color" },
   // target=color, easy, blue-majority
   { target_color_proportion: 0.59, dot_color_final: ["hsl(225, 50%, 50%)", "hsl(0, 50%, 50%)"], difficulty: "easy",
-    coherent_direction: 0, coherence: 0, correct_value: "blue", task_type: "irrelevant", data_part: "RDK_color" },
-  // target=color, hard, red-majority
-  { target_color_proportion: 0.54, dot_color_final: ["hsl(0, 50%, 50%)", "hsl(225, 50%, 50%)"], difficulty: "hard",
-    coherent_direction: 0, coherence: 0, correct_value: "red", task_type: "irrelevant", data_part: "RDK_color" },
-  // target=color, hard, blue-majority
-  { target_color_proportion: 0.54, dot_color_final: ["hsl(225, 50%, 50%)", "hsl(0, 50%, 50%)"], difficulty: "hard",
-    coherent_direction: 0, coherence: 0, correct_value: "blue", task_type: "irrelevant", data_part: "RDK_color" },
-  // target=color, easy, red-majority
-  { target_color_proportion: 0.59, dot_color_final: ["hsl(0, 50%, 50%)", "hsl(225, 50%, 50%)"], difficulty: "easy",
-    coherent_direction: 0, coherence: 0, correct_value: "red", task_type: "irrelevant", data_part: "RDK_color" },
-  // target=color, easy, blue-majority
-  { target_color_proportion: 0.59, dot_color_final: ["hsl(225, 50%, 50%)", "hsl(0, 50%, 50%)"], difficulty: "easy",
-    coherent_direction: 0, coherence: 0, correct_value: "blue", task_type: "irrelevant", data_part: "RDK_color" },
-  // target=color, hard, red-majority
-  { target_color_proportion: 0.54, dot_color_final: ["hsl(0, 50%, 50%)", "hsl(225, 50%, 50%)"], difficulty: "hard",
-    coherent_direction: 0, coherence: 0, correct_value: "red", task_type: "irrelevant", data_part: "RDK_color" },
-  // target=color, hard, blue-majority
-  { target_color_proportion: 0.54, dot_color_final: ["hsl(225, 50%, 50%)", "hsl(0, 50%, 50%)"], difficulty: "hard",
     coherent_direction: 0, coherence: 0, correct_value: "blue", task_type: "irrelevant", data_part: "RDK_color" }
 ];
 // selfRight: square=self, circle=other
 var base_color_selfRight = addShapeDifficulty(base_color_selfRight_core, "square");
-
-// 将8条core拆分为两组各4条，每组在 easy/hard/red+blue 上完全平衡
-// association 由 addShapeDifficulty 根据形状自动设置
-var base_color_selfLeft_core_groupA = [
-  base_color_selfLeft_core[0], base_color_selfLeft_core[3],
-  base_color_selfLeft_core[5], base_color_selfLeft_core[6]
-];
-var base_color_selfLeft_core_groupB = [
-  base_color_selfLeft_core[1], base_color_selfLeft_core[2],
-  base_color_selfLeft_core[4], base_color_selfLeft_core[7]
-];
-// selfLeft: circle=self, square=other
-var base_color_selfLeft_groupA = addShapeDifficulty(base_color_selfLeft_core_groupA, "circle");
-var base_color_selfLeft_groupB = addShapeDifficulty(base_color_selfLeft_core_groupB, "circle");
-var conditions_color_selfLeft_groupA = generateDiscriminationConditions(base_color_selfLeft_groupA, {
+var conditions_color_selfRight = generateDiscriminationConditions(base_color_selfRight, {
   "red": ["红", "蓝"],
   "blue": ["蓝", "红"]
 });
-var conditions_color_selfLeft_groupB = generateDiscriminationConditions(base_color_selfLeft_groupB, {
-  "red": ["红", "蓝"],
-  "blue": ["蓝", "红"]
-});
-
-// selfRight 同理
-var base_color_selfRight_core_groupA = [
-  base_color_selfRight_core[0], base_color_selfRight_core[3],
-  base_color_selfRight_core[5], base_color_selfRight_core[6]
-];
-var base_color_selfRight_core_groupB = [
-  base_color_selfRight_core[1], base_color_selfRight_core[2],
-  base_color_selfRight_core[4], base_color_selfRight_core[7]
-];
-// selfRight: square=self, circle=other
-var base_color_selfRight_groupA = addShapeDifficulty(base_color_selfRight_core_groupA, "square");
-var base_color_selfRight_groupB = addShapeDifficulty(base_color_selfRight_core_groupB, "square");
-var conditions_color_selfRight_groupA = generateDiscriminationConditions(base_color_selfRight_groupA, {
-  "red": ["红", "蓝"],
-  "blue": ["蓝", "红"]
-});
-var conditions_color_selfRight_groupB = generateDiscriminationConditions(base_color_selfRight_groupB, {
-  "red": ["红", "蓝"],
-  "blue": ["蓝", "红"]
-});
-
-// 合并A+B供练习block使用（练习用全部64条件）
-var conditions_color_selfLeft = conditions_color_selfLeft_groupA.concat(conditions_color_selfLeft_groupB);
-var conditions_color_selfRight = conditions_color_selfRight_groupA.concat(conditions_color_selfRight_groupB);
 
 /* ==================== 任务重合条件（身份判断） ==================== */
 // 被试判断散点图代表"我"还是"他/她"，根据关联维度推断身份
 // 目标=形状（身份），通过 addColorDifficulty 正交增加颜色维度难度
 // selfLeft（userId偶数）：大多数为圆形=自我，大多数为正方形=他人
 var base_overlap_selfLeft_core = [
-  // self, easy (circle=identity)
+  // easy only
   { dot_shape_ratio: 0.59, dot_shape: "circle", difficulty: "easy", association: "self",
     coherent_direction: 0, coherence: 0, correct_value: "self", task_type: "overlap", data_part: "RDK_overlap" },
-  // self, hard
-  { dot_shape_ratio: 0.54, dot_shape: "circle", difficulty: "hard", association: "self",
-    coherent_direction: 0, coherence: 0, correct_value: "self", task_type: "overlap", data_part: "RDK_overlap" },
-  // other, easy (square=other)
   { dot_shape_ratio: 0.59, dot_shape: "square", difficulty: "easy", association: "other",
-    coherent_direction: 0, coherence: 0, correct_value: "other", task_type: "overlap", data_part: "RDK_overlap" },
-  // other, hard
-  { dot_shape_ratio: 0.54, dot_shape: "square", difficulty: "hard", association: "other",
     coherent_direction: 0, coherence: 0, correct_value: "other", task_type: "overlap", data_part: "RDK_overlap" }
 ];
 var base_overlap_selfLeft = addColorDifficulty(base_overlap_selfLeft_core);
 
 // selfRight（userId奇数）：大多数为正方形=自我，大多数为圆形=他人
 var base_overlap_selfRight_core = [
-  // self, easy (square=identity)
+  // easy only
   { dot_shape_ratio: 0.59, dot_shape: "square", difficulty: "easy", association: "self",
     coherent_direction: 0, coherence: 0, correct_value: "self", task_type: "overlap", data_part: "RDK_overlap" },
-  // self, hard
-  { dot_shape_ratio: 0.54, dot_shape: "square", difficulty: "hard", association: "self",
-    coherent_direction: 0, coherence: 0, correct_value: "self", task_type: "overlap", data_part: "RDK_overlap" },
-  // other, easy (circle=other)
   { dot_shape_ratio: 0.59, dot_shape: "circle", difficulty: "easy", association: "other",
-    coherent_direction: 0, coherence: 0, correct_value: "other", task_type: "overlap", data_part: "RDK_overlap" },
-  // other, hard
-  { dot_shape_ratio: 0.54, dot_shape: "circle", difficulty: "hard", association: "other",
     coherent_direction: 0, coherence: 0, correct_value: "other", task_type: "overlap", data_part: "RDK_overlap" }
 ];
 var base_overlap_selfRight = addColorDifficulty(base_overlap_selfRight_core);
@@ -1316,7 +1195,7 @@ var RDK_color = RDK_discrimination;
 
 //练习阶段的任务
 
-var practiceSet_color_selfLeft = createPracticeSet(conditions_color_selfLeft, 24);
+var practiceSet_color_selfLeft = createPracticeSet(conditions_color_selfLeft, 8);
 var practice_block_color_selfLeft = {
   timeline: [
     instruction_color_beginning,
@@ -1324,7 +1203,7 @@ var practice_block_color_selfLeft = {
     {
       timeline: [fixation, RDK_color, feedbackTrial],
       timeline_variables: practiceSet_color_selfLeft,
-      repetitions: 1,
+      repetitions: 2,
       randomize_order: true
     },
     instruction_RDK_practice_end
@@ -1339,7 +1218,7 @@ var practice_block_color_selfLeft = {
   },
 };
 
-var practiceSet_color_selfRight = createPracticeSet(conditions_color_selfRight, 24);
+var practiceSet_color_selfRight = createPracticeSet(conditions_color_selfRight, 8);
 var practice_block_color_selfRight = {
   timeline: [
     instruction_color_beginning,
@@ -1347,7 +1226,7 @@ var practice_block_color_selfRight = {
     {
       timeline: [fixation, RDK_color, feedbackTrial],
       timeline_variables: practiceSet_color_selfRight,
-      repetitions: 1,
+      repetitions: 2,
       randomize_order: true
     },
     instruction_RDK_practice_end
@@ -1416,38 +1295,20 @@ var practice_block_color = {
 var formal_block_color_selfLeft = {
   timeline: [
     instruction_color,
-    // 子块1: groupA
+    // Block 1
     {
       timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfLeft_groupA,
-      repetitions: 1,
+      timeline_variables: conditions_color_selfLeft,
+      repetitions: 8,
       randomize_order: true
     },
     feedbackBlock_RDK,
     rest_rdk,
-    // 子块2: groupB
+    // Block 2
     {
       timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfLeft_groupB,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    // 子块3: groupA
-    {
-      timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfLeft_groupA,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    // 子块4: groupB
-    {
-      timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfLeft_groupB,
-      repetitions: 1,
+      timeline_variables: conditions_color_selfLeft,
+      repetitions: 8,
       randomize_order: true
     },
     feedbackBlock_RDK,
@@ -1457,38 +1318,20 @@ var formal_block_color_selfLeft = {
 var formal_block_color_selfRight = {
   timeline: [
     instruction_color,
-    // 子块1: groupA
+    // Block 1
     {
       timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfRight_groupA,
-      repetitions: 1,
+      timeline_variables: conditions_color_selfRight,
+      repetitions: 8,
       randomize_order: true
     },
     feedbackBlock_RDK,
     rest_rdk,
-    // 子块2: groupB
+    // Block 2
     {
       timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfRight_groupB,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    // 子块3: groupA
-    {
-      timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfRight_groupA,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    // 子块4: groupB
-    {
-      timeline: [fixation, RDK_color],
-      timeline_variables: conditions_color_selfRight_groupB,
-      repetitions: 1,
+      timeline_variables: conditions_color_selfRight,
+      repetitions: 8,
       randomize_order: true
     },
     feedbackBlock_RDK,
@@ -1599,7 +1442,7 @@ var instruction_overlap = {
 };
 
 // 练习阶段
-var practiceSet_overlap_selfLeft = createPracticeSet(conditions_overlap_selfLeft, 24);
+var practiceSet_overlap_selfLeft = createPracticeSet(conditions_overlap_selfLeft, 8);
 var practice_block_overlap_selfLeft = {
   timeline: [
     instruction_overlap,
@@ -1607,7 +1450,7 @@ var practice_block_overlap_selfLeft = {
     {
       timeline: [fixation, RDK_discrimination, feedbackTrial],
       timeline_variables: practiceSet_overlap_selfLeft,
-      repetitions: 1,
+      repetitions: 2,
       randomize_order: true
     },
     instruction_RDK_practice_end
@@ -1622,7 +1465,7 @@ var practice_block_overlap_selfLeft = {
   },
 };
 
-var practiceSet_overlap_selfRight = createPracticeSet(conditions_overlap_selfRight, 24);
+var practiceSet_overlap_selfRight = createPracticeSet(conditions_overlap_selfRight, 8);
 var practice_block_overlap_selfRight = {
   timeline: [
     instruction_overlap,
@@ -1630,7 +1473,7 @@ var practice_block_overlap_selfRight = {
     {
       timeline: [fixation, RDK_discrimination, feedbackTrial],
       timeline_variables: practiceSet_overlap_selfRight,
-      repetitions: 1,
+      repetitions: 2,
       randomize_order: true
     },
     instruction_RDK_practice_end
@@ -1667,34 +1510,20 @@ var practice_block_overlap = {
 var formal_block_overlap_selfLeft = {
   timeline: [
     instruction_RDK_formal_beginning,
+    // Block 1
     {
       timeline: [fixation, RDK_discrimination],
       timeline_variables: conditions_overlap_selfLeft,
-      repetitions: 1,
+      repetitions: 8,
       randomize_order: true
     },
     feedbackBlock_RDK,
     rest_rdk,
+    // Block 2
     {
       timeline: [fixation, RDK_discrimination],
       timeline_variables: conditions_overlap_selfLeft,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_overlap_selfLeft,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_overlap_selfLeft,
-      repetitions: 1,
+      repetitions: 8,
       randomize_order: true
     },
     feedbackBlock_RDK,
@@ -1704,34 +1533,20 @@ var formal_block_overlap_selfLeft = {
 var formal_block_overlap_selfRight = {
   timeline: [
     instruction_RDK_formal_beginning,
+    // Block 1
     {
       timeline: [fixation, RDK_discrimination],
       timeline_variables: conditions_overlap_selfRight,
-      repetitions: 1,
+      repetitions: 8,
       randomize_order: true
     },
     feedbackBlock_RDK,
     rest_rdk,
+    // Block 2
     {
       timeline: [fixation, RDK_discrimination],
       timeline_variables: conditions_overlap_selfRight,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_overlap_selfRight,
-      repetitions: 1,
-      randomize_order: true
-    },
-    feedbackBlock_RDK,
-    rest_rdk,
-    {
-      timeline: [fixation, RDK_discrimination],
-      timeline_variables: conditions_overlap_selfRight,
-      repetitions: 1,
+      repetitions: 8,
       randomize_order: true
     },
     feedbackBlock_RDK,
