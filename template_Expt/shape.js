@@ -481,7 +481,7 @@ var match_pract_retries = 0;
 var instruction_block2_enter = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: `
-  <div style="text-align: left; color: white; padding: 10px">
+  <div style="text-align: left; color: white; padding: 10px; font-size: 26px">
     <p>第一组已完成！</p>
     <p>即将进入下一组</p>
     <p style="color: hsl(50, 80%, 60%); font-weight: bold;">注意：从本组测试开始，正确率需达到 85% 及以上才能进入后面的正式任务</p>
