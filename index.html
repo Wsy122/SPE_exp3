@@ -73,7 +73,7 @@
     window.rdk_pract_mun = 2;
     window.match_formal_mun = 3;
     window.rdk_foraml_mun = 6;
-    window.pract_pass_rate = 85
+    window.pract_pass_rate = 90
   }
   
 
@@ -235,7 +235,7 @@
           choices: ["男", "女"],
           isRequired: true,
           showNoneItem: false,
-          showOtherItem: false,
+          hasOther: false,
           colCount: 0,
           name: "sex"
         },
@@ -254,7 +254,7 @@
           choices: ["左", "右"],
           isRequired: true,
           showNoneItem: false,
-          showOtherItem: false,
+          hasOther: false,
           colCount: 0,
           name: "hands"
         },
@@ -264,7 +264,7 @@
           choices: ["色盲", "色弱", "都不是", "不确定"],
           isRequired: true,
           showNoneItem: false,
-          showOtherItem: false,
+          hasOther: false,
           colCount: 0,
           name: "color_blindness"
         }
@@ -320,11 +320,11 @@
     survey_isMatch.survey_json.elements = [
       {
         type: "radiogroup",
-        title: "散点图中大多数为圆形代表",
+        title: "在之前的任务中，散点图中大多数为圆形代表",
         choices: ["我", "TA"],
         isRequired: true,
         showNoneItem: false,
-        showOtherItem: false,
+        hasOther: false,
         colCount: 0,
         name: "shape_circle",
       },
@@ -334,7 +334,7 @@
         choices: ["我", "TA"],
         isRequired: true,
         showNoneItem: false,
-        showOtherItem: false,
+        hasOther: false,
         colCount: 0,
         name: "shape_square",
       },
@@ -343,11 +343,11 @@
     survey_isMatch.survey_json.elements = [
       {
         type: "radiogroup",
-        title: "散点图整体为红色代表",
+        title: "在之前的任务中，散点图整体为红色代表",
         choices: ["我", "TA"],
         isRequired: true,
         showNoneItem: false,
-        showOtherItem: false,
+        hasOther: false,
         colCount: 0,
         name: "color_red",
       },
@@ -357,12 +357,224 @@
         choices: ["我", "TA"],
         isRequired: true,
         showNoneItem: false,
-        showOtherItem: false,
+        hasOther: false,
         colCount: 0,
         name: "color_blue",
       },
     ];
   }
+
+  const survey_strategy = {
+    type: jsPsychSurvey,
+    survey_json: {
+      showQuestionNumbers: true, title: "答案没有好坏之分，请您根据自己的实际情况回答", completeText: "提交",
+      elements: [
+        {
+          type: "matrix",
+          name: "subjective-rating-matrix",
+          title: "计分标准：1 = 极低；7 = 极高",
+          alternateRows: true,
+          isAllRowRequired: true,
+          rows: [
+            {text: "您觉得任务的整体难度如何", value: "task difficulty"},
+            {text: "完成任务过程中，您投入的精力如何", value: "effort invested"},
+            {text: "整体完成本次实验任务的愉悦程度", value: "enjoyment"}
+          ],
+          columns: [
+            {value: 1, text: "1"},
+            {value: 2, text: "2"},
+            {value: 3, text: "3"},
+            {value: 4, text: "4"},
+            {value: 5, text: "5"},
+            {value: 6, text: "6"},
+            {value: 7, text: "7"}
+          ]
+        },
+        {
+          type: "checkbox",
+          title: "您觉得实验设置中影响任务表现的主要障碍是什么？",
+          choices: ["刺激细节难以看清", "看清楚了但难以辨别", "难以集中注意力", "每段任务的时间太长，容易疲劳", "整个实验的时间太长，精力不足", "没有时间"],
+          isRequired: true,
+          showNoneItem: false,
+          hasOther: true,
+          colCount: 0,
+          name: "main obstacle"
+        },
+        {
+          type: "checkbox",
+          title: "您觉得实验环境中影响任务表现的因素有什么？",
+          choices: ["噪音干扰", "其他人在附近", "电脑屏幕上有其他窗口出现、消息弹窗", "腾讯会议悬浮窗口分心", "屏幕亮度/大小不合适"],
+          isRequired: true,
+          showNoneItem: false,
+          hasOther: true,
+          colCount: 0,
+          name: "environmental factor"
+        },
+        {
+          type: "radiogroup",
+          title: "在整个实验中，您更追求的目标是",
+          choices: ["尽快地完成实验", "尽可能正确地完成实验", "又快又准地完成", "没有特别的目标，就是按键"],
+          isRequired: true,
+          showNoneItem: false,
+          hasOther: true,
+          colCount: 0,
+          name: "speed-accuracy trade-off"
+        },
+        {
+          type: "radiogroup",
+          title: "在整个实验中，进行判断时，您更关注",
+          choices: ["散点图的整体", "散点图的某个局部（如只关注某个地方或某种形状/颜色）", "没有特定的关注方式"],
+          isRequired: true,
+          showNoneItem: false,
+          hasOther: true,
+          colCount: 0,
+          name: "whole-part"
+        },
+        {
+          type: "radiogroup",
+          title: "在学习阶段，完成匹配任务（上方呈现图片下方呈现文字并需要做匹配判断）中，您优先的关注是",
+          choices: ["散点图是什么", "文字是什么", "同时判断"],
+          isRequired: true,
+          showNoneItem: false,
+          hasOther: true,
+          colCount: 0,
+          name: "match task dot-word"
+        },
+        {
+          type: "radiogroup",
+          title: "在匹配学习中，您是否有使用策略更好地记忆什么代表自己或他人",
+          choices: ["有", "无"],
+          isRequired: true,
+          showNoneItem: false,
+          hasOther: false,
+          colCount: 0,
+          name: "match task memory strategy"
+        },
+        {
+          type: 'text',
+          title: "您使用的记忆策略是",
+          name: "memory strategy",
+          visibleIf: "{match task memory strategy} = \"有\"",
+          isRequired: true
+        },
+        {
+          type: "radiogroup",
+          title: "在选择散点代表谁的任务中，您是否有使用任何策略",
+          choices: ["有", "无"],
+          isRequired: true,
+          showNoneItem: false,
+          hasOther: false,
+          colCount: 0,
+          name: "identity task strategy"
+        },
+        {
+          type: "radiogroup",
+          title: "在选择散点整体颜色的任务中，您是否有使用任何策略",
+          choices: ["有", "无"],
+          isRequired: true,
+          showNoneItem: false,
+          hasOther: false,
+          colCount: 0,
+          name: "color task strategy"
+        },
+        {
+          type: "radiogroup",
+          title: "在选择散点整体形状的任务中，您是否有使用任何策略",
+          choices: ["有", "无"],
+          isRequired: true,
+          showNoneItem: false,
+          hasOther: false,
+          colCount: 0,
+          name: "shape task strategy"
+        },
+        {
+          type: "radiogroup",
+          title: "不同选择任务的策略",
+          choices: ["相同", "不同"],
+          isRequired: true,
+          showNoneItem: false,
+          hasOther: false,
+          colCount: 0,
+          name: "strategy same or different",
+          visibleIf: "{identity task strategy} = \"有\" or {color task strategy} = \"有\" or {shape task strategy} = \"有\""
+        },
+        {
+          type: "radiogroup",
+          title: "如果策略不同，哪一个任务策略变化最大",
+          choices: ["选择散点代表谁的任务", "选择散点整体颜色任务", "选择散点整体形状的任务"],
+          isRequired: true,
+          showNoneItem: false,
+          hasOther: false,
+          colCount: 0,
+          name: "strategy change most",
+          visibleIf: "{strategy same or different} = \"不同\""
+        },
+        {
+          type: 'text',
+          title: "实验中是否有特定线索或信息提升作答表现",
+          name: "helpful cues",
+          isRequired: false
+        },
+        {
+          type: "radiogroup",
+          title: "当前任务的报酬对您完成任务的影响",
+          choices: ["报酬较低，希望尽快结束", "报酬较低，缺乏动力", "报酬适中，对我的作答没有影响", "报酬较高，促使我更认真完成", "报酬较高，担心出错而紧张"],
+          isRequired: true,
+          showNoneItem: false,
+          hasOther: true,
+          colCount: 0,
+          name: "reward influence"
+        }
+      ]
+    },
+    data: {
+      part: "survey_strategy"
+    },
+    on_finish: function (data) {
+      console.log("策略问卷回答：", data.response)
+    }
+  };
+
+  //---------事后动机问卷---------
+
+  var survey_motivation = {
+    type: jsPsychSurvey,
+    survey_json: {
+      showQuestionNumbers: true,
+      title: "事后动机问卷",
+      completeText: "提交",
+      elements: [
+        {
+          type: "matrix",
+          name: "motivation-matrix",
+          title: "下面几个问题主要针对您刚才的整个实验任务，请您选择合适的选项",
+          alternateRows: true,
+          isAllRowRequired: true,
+          rows: [
+            {text: "我希望自己的表现优于大多数人", value: "motivation outperform"},
+            {text: "我渴望把任务做好", value: "motivation eager"},
+            {text: "完成这个任务是有价值的", value: "motivation valuable"},
+            {text: "我其实并不太在意自己的表现", value: "motivation indifferent"},
+            {text: "这个任务激发了我的竞争欲望", value: "motivation competitive"},
+            {text: "我在完成任务中投入了很多精力", value: "motivation effort"}
+          ],
+          columns: [
+            {value: 1, text: "完全不符合"},
+            {value: 2, text: "不太符合"},
+            {value: 3, text: "有点符合"},
+            {value: 4, text: "比较符合"},
+            {value: 5, text: "完全符合"}
+          ]
+        }
+      ]
+    },
+    data: {
+      part: "survey_motivation"
+    },
+    on_finish: function (data) {
+      console.log("动机问卷回答：", data.response)
+    }
+  };
 
   //分配不同的组别
 
@@ -404,7 +616,7 @@
     beginning, 
     getThreshold, 
     assign_group, 
-    survey_isMatch, end]
+    survey_isMatch, survey_strategy, survey_motivation, end]
 
   jsPsych.run(main_timeline);
 
