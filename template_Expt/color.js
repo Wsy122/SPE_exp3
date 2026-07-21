@@ -205,7 +205,7 @@ var instruction_match_practice = {
           <h3 style="text-align: center; font-size: 30px; margin: 10px;">学习阶段</h3>
           <p>整体颜色为<span style="color: hsl(0, 50%, 50%)">红色</span>代表<span style="color: hsl(0, 50%, 50%)">你自己</span> ，为<span style="color: hsl(225, 50%, 50%)">蓝色</span>代表<span style="color: hsl(225, 50%, 50%)">他人</span>。</p >
           <p>您需要判断 <span style="font-weight: bold">散点图的整体颜色与文字是否匹配</span>，<span style="color: hsl(135, 50%, 50%);">匹配</span> 按 <span style="color: hsl(135, 50%, 50%);">"F" 键</span>；<span style="color: red;">不匹配</span> 按 <span style="color: red;">"J" 键</span> </p >
-          <p>正确率达到 85% 及以上才能完成关联学习</p >
+          <p>正确率达到 90% 及以上才能完成关联学习</p >
           <p>请把左手食指放在 "F" 键上，右手食指放在 "J" 键上</p >
           <p>请按下空格键开始练习</p >
         </div>`;
@@ -215,7 +215,7 @@ var instruction_match_practice = {
           <h3 style="text-align: center; font-size: 30px; margin: 10px;">学习阶段</h3>
           <p>整体颜色为<span style="color: hsl(225, 50%, 50%)">蓝色</span>代表<span style="color: hsl(225, 50%, 50%)">你自己</span> ，为<span style="color: hsl(0, 50%, 50%)">红色</span>代表<span style="color: hsl(0, 50%, 50%)">他人</span>。</p >
           <p>您需要判断 <span style="font-weight: bold">散点图的整体颜色与文字是否匹配</span>，<span style="color: hsl(135, 50%, 50%);">匹配</span> 按 <span style="color: hsl(135, 50%, 50%);">"F" 键</span>；<span style="color: red;">不匹配</span> 按 <span style="color: red;">"J" 键</span> </p >
-          <p>正确率达到 85% 及以上才能完成关联学习</p >
+          <p>正确率达到 90% 及以上才能完成关联学习</p >
           <p>请把左手食指放在 "F" 键上，右手食指放在 "J" 键上</p >
           <p>请按下空格键开始练习</p >
         </div>`;
@@ -275,7 +275,7 @@ var match_RDK = {
   correct_choice: function () { return jsPsych.timelineVariable("correct_choice") },
   coherent_direction: 0,
   coherence: 0,
-  dot_radius: 4.5, 
+  dot_radius: 5, 
   move_distance: 2.2, 
   aperture_width: 400,
   aperture_height: 400,
@@ -420,16 +420,15 @@ var feedbackTrial_match = {
 
 //计算整个练习阶段的总体正确率
 //计算32个试次的反应数，挑出正确的试次数，计算准确率 
-//如果整体正确率未达到85%，告知被试继续下一轮测试
+//如果整体正确率未达到90%，告知被试继续下一轮测试
 
 var instruction_retry_block = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: function() {
-    var nextRound = match_pract_block + 2; // Block N 完成后 → 第 N+2 轮
     return `
     <div style="text-align: center; color: white; padding: 30px; font-size: 30px">
-      <p>您的正确率未达到 85% ，不能进入下一阶段</p>
-      <p>请继续进行第 ${nextRound} 轮测试</p>
+      <p>您的正确率未达到 90% ，不能进入下一阶段</p>
+      <p>请继续学习</p>
       <p>请按空格键继续</p>
     </div>`;
   },
@@ -461,7 +460,7 @@ var instruction_practiceEnd = {
   },
 };
 
-//========== 匹配练习（Block1无要求 + Block2需85%，最多5个block） ==========
+//========== 匹配练习（Block1无要求 + Block2需90%，最多5个block） ==========
 // 每次 loop 只跑 1 个 block（32 trials），由 loop_function 控制流程
 var match_pract_block = 0;   // 当前第几轮（0=block1, 1=block2, 2=block2重试...）
 var match_pract_retries = 0; // block2重试次数
@@ -473,7 +472,7 @@ var instruction_block2_enter = {
   <div style="text-align: left; color: white; padding: 10px; font-size: 26px">
     <p>第一组已完成！</p>
     <p>即将进入下一组</p>
-    <p style="color: hsl(50, 80%, 60%); font-weight: bold;">注意：从本组测试开始，正确率需达到 85% 及以上才能进入后面的正式任务</p>
+    <p style="color: hsl(50, 80%, 60%); font-weight: bold;">注意：从本组测试开始，正确率需达到 90% 及以上才能进入后面的正式任务</p>
     <p>请按空格键继续</p>
   </div>
   `,
@@ -493,11 +492,11 @@ var practice_block_selfRed = {
     instruction_match_practice,
     {
       timeline: [
-        // 1个block的trial（32 trials）
+        // 1个block的trial（48 trials）
         {
           timeline: [fixation, match_RDK, feedbackTrial_match],
           timeline_variables: conditions_match_selfRed,
-          repetitions: 8,
+          repetitions: 12,
           randomize_order: true
         },
         // Block1 完成后显示过渡提示（match_pract_block 在 loop_function 中才递增，故此时仍为 0）
@@ -510,7 +509,7 @@ var practice_block_selfRed = {
           timeline: [instruction_practiceEnd],
           conditional_function: function() {
             if (match_pract_block < 1) return false;
-            var trials = jsPsych.data.get().filter({task: 'response'}).last(32);
+            var trials = jsPsych.data.get().filter({task: 'response'}).last(48);
             var correct_trials = trials.filter({correct: true});
             return Math.round(correct_trials.count() / trials.count() * 100) >= window.pract_pass_rate;
           }
@@ -519,7 +518,7 @@ var practice_block_selfRed = {
           timeline: [instruction_retry_block],
           conditional_function: function() {
             if (match_pract_block < 1) return false;
-            var trials = jsPsych.data.get().filter({task: 'response'}).last(32);
+            var trials = jsPsych.data.get().filter({task: 'response'}).last(48);
             var correct_trials = trials.filter({correct: true});
             return Math.round(correct_trials.count() / trials.count() * 100) < window.pract_pass_rate;
           }
@@ -532,7 +531,7 @@ var practice_block_selfRed = {
           return true;
         }
         // Block 2+ 完成，检查正确率
-        var trials = jsPsych.data.get().filter({task: 'response'}).last(32);
+        var trials = jsPsych.data.get().filter({task: 'response'}).last(48);
         var correct_trials = trials.filter({correct: true});
         var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
         console.log("[match_practice] Block", match_pract_block, "accuracy:", accuracy);
@@ -544,7 +543,7 @@ var practice_block_selfRed = {
         match_pract_retries++;
         console.log("[match_practice] Failed, retry", match_pract_retries);
         if (match_pract_retries >= 4) {
-          alert("多次尝试后仍未达到85%的正确率，请联系主试。");
+          alert("多次尝试后仍未达到90%的正确率，请联系主试。");
           return false;
         }
         return true;
@@ -562,7 +561,7 @@ var practice_block_selfBlue = {
         {
           timeline: [fixation, match_RDK, feedbackTrial_match],
           timeline_variables: conditions_match_selfBlue,
-          repetitions: 8,
+          repetitions: 12,
           randomize_order: true
         },
         {
@@ -573,7 +572,7 @@ var practice_block_selfBlue = {
           timeline: [instruction_practiceEnd],
           conditional_function: function() {
             if (match_pract_block < 1) return false;
-            var trials = jsPsych.data.get().filter({task: 'response'}).last(32);
+            var trials = jsPsych.data.get().filter({task: 'response'}).last(48);
             var correct_trials = trials.filter({correct: true});
             return Math.round(correct_trials.count() / trials.count() * 100) >= window.pract_pass_rate;
           }
@@ -582,7 +581,7 @@ var practice_block_selfBlue = {
           timeline: [instruction_retry_block],
           conditional_function: function() {
             if (match_pract_block < 1) return false;
-            var trials = jsPsych.data.get().filter({task: 'response'}).last(32);
+            var trials = jsPsych.data.get().filter({task: 'response'}).last(48);
             var correct_trials = trials.filter({correct: true});
             return Math.round(correct_trials.count() / trials.count() * 100) < window.pract_pass_rate;
           }
@@ -591,7 +590,7 @@ var practice_block_selfBlue = {
       loop_function: function () {
         match_pract_block++;
         if (match_pract_block === 1) return true;
-        var trials = jsPsych.data.get().filter({task: 'response'}).last(32);
+        var trials = jsPsych.data.get().filter({task: 'response'}).last(48);
         var correct_trials = trials.filter({correct: true});
         var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
         console.log("[match_practice] Block", match_pract_block, "accuracy:", accuracy);
@@ -856,7 +855,7 @@ var RDK_discrimination = {
   target_color_proportion: function () { return jsPsych.timelineVariable("target_color_proportion") },
   dot_shape: function () { return jsPsych.timelineVariable("dot_shape") },
   dot_shape_ratio: function () { return jsPsych.timelineVariable("dot_shape_ratio") },
-  dot_radius: 4.5,
+  dot_radius: 5,
   move_distance: 2.2,
   aperture_width: 400,
   aperture_height: 400,
@@ -1145,12 +1144,11 @@ var instruction_overlap = {
           <p>屏幕上会呈现运动的彩色圆点，</p>
           <p>整体颜色为<span style="color: hsl(0, 50%, 50%)">红色</span>代表<span style="color: hsl(0, 50%, 50%)">你自己</span> ，为<span style="color: hsl(225, 50%, 50%)">蓝色</span>代表<span style="color: hsl(225, 50%, 50%)">他人</span>。</p >
           <p>您需要判断散点图代表的是<span style="font-weight: bold">您自己</span>还是<span style="font-weight: bold">他人</span>：</p>
+          <p>散点图下方会显示"我"和"他/她"的文字标签，</p>
           <ul>
             <li>若代表<span style="font-weight: bold">"我"</span>，请按文字标签所在侧的对应键</li>
             <li>若代表<span style="font-weight: bold">"他/她"</span>，请按文字标签所在侧的对应键</li>
           </ul>
-          <p>散点图下方会显示"我"和"他/她"的文字标签，</p>
-          <p>哪个标签的答案正确，就按那一侧的键：左侧按 <span style="font-weight: bold">F</span>，右侧按 <span style="font-weight: bold">J</span></p>
           <p>请按下空格键进入练习阶段</p>
         </div>`
     } else {
@@ -1160,12 +1158,11 @@ var instruction_overlap = {
           <p>屏幕上会呈现运动的彩色圆点，</p>
           <p>整体颜色为<span style="color: hsl(225, 50%, 50%)">蓝色</span>代表<span style="color: hsl(225, 50%, 50%)">你自己</span> ，为<span style="color: hsl(0, 50%, 50%)">红色</span>代表<span style="color: hsl(0, 50%, 50%)">他人</span>。</p >
           <p>您需要判断散点图代表的是<span style="font-weight: bold">您自己</span>还是<span style="font-weight: bold">他人</span>：</p>
+          <p>散点图下方会显示"我"和"他/她"的文字标签，</p>
           <ul>
             <li>若代表<span style="font-weight: bold">"我"</span>，请按文字标签所在侧的对应键</li>
             <li>若代表<span style="font-weight: bold">"他/她"</span>，请按文字标签所在侧的对应键</li>
           </ul>
-          <p>散点图下方会显示"我"和"他/她"的文字标签，</p>
-          <p>哪个标签的答案正确，就按那一侧的键：左侧按 <span style="font-weight: bold">F</span>，右侧按 <span style="font-weight: bold">J</span></p>
           <p>请按下空格键进入练习阶段</p>
         </div>`;
     }
@@ -1181,7 +1178,7 @@ var instruction_overlap = {
 var practiceSet_overlap_selfRed = createPracticeSet(conditions_overlap_selfRed, 8);
 var practice_block_overlap_selfRed = {
   timeline: [
-    instruction_overlap,
+    instruction_overlap, 
     instruction_RDK_practice,
     {
       timeline: [fixation, RDK_discrimination, feedbackTrial],
@@ -1318,7 +1315,7 @@ var instruction_motion_beginning = {
     <div style="text-align: left; color: white; padding: 10px"> 
       <h3 style="text-align: center; font-size: 30px; margin: 10px">接下来是：形状判断任务</h3>
       <p>屏幕上会呈现一些彩色圆点，其中一定比例的点为 <span style="font-weight: bold">圆形</span>，其余为 <span style="font-weight: bold">正方形</span>，</p>
-      <p>您需要判断 <span style="font-weight: bold">散点图中哪种形状的数量更多（即大多数点的形状）是圆形还是正方形</span>：</p >
+      <p>您需要判断 <span style="font-weight: bold">散点图中哪种形状的数量更多（即大多数点的形状）是圆形还是正方形</span></p >
       <p>散点图下方会显示"圆"和"方"的文字标签，</p>
       <ul>
         <li>若大多数点为 <span style="font-weight: bold">圆形</span>，请按对应文字标签所在侧的键（左侧按 <span style="font-weight: bold">F</span>，右侧按 <span style="font-weight: bold">J</span>）</li>

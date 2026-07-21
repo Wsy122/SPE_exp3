@@ -86,8 +86,6 @@ let instruction_getThreshold = {
       <p>测试包含两部分：<span style="font-weight: bold">形状判断</span>和<span style="font-weight: bold">颜色判断</span>。</p>
       <p>形状判断：判断散点图中哪种形状（圆形/正方形）的数量更多；</p>
       <p>颜色判断：判断散点图中哪种颜色（红色/蓝色）的数量更多。</p>
-      <p>测试过程中，散点图下方会显示对应的文字标签（"圆"和"方"或"红"和"蓝"），</p>
-      <p>请根据文字标签位置按对应的键：左侧按 <span style="font-weight: bold">F</span>，右侧按 <span style="font-weight: bold">J</span></p>
       <p>如有疑问请向主试咨询，没有则按下空格键开始</p>
     </div>`
   },
@@ -106,13 +104,13 @@ var instruction_taskSeparate_shape = {
     this.stimulus = `
     <div style="text-align: left; color: white; padding: 10px"> 
       <p>现在是形状判断</p>
-      <p>您需要<span style="font-weight: bold">忽略点的颜色</span>并判断哪种形状的数量更多:</p >
+      <p>您需要<span style="font-weight: bold">忽略点的颜色</span>并判断哪种形状的数量更多</p >
+      <p>散点图下方会显示"圆"和"方"的文字标签，请根据文字位置按对应的键</p>
         <ul>
             <li>大多数为<span style="font-weight: bold">圆形</span>，请按对应文字标签所在侧的键（左侧按<span style="font-weight: bold">"F"键</span>，右侧按<span style="font-weight: bold">"J"键</span>）</li>
             <li>大多数为<span style="font-weight: bold">正方形</span>，请按对应文字标签所在侧的键（左侧按<span style="font-weight: bold">"F"键</span>，右侧按<span style="font-weight: bold">"J"键</span>）</li>
           </ul>
-      <p>散点图下方会显示"圆"和"方"的文字标签，请根据文字位置按对应的键</p>
-      <p>准备好后请按空格键开始</p>
+      <p>您需要完成两组判断，准备好后请按空格键开始</p>
     </div>`
   },
   response_ends_trial: true,
@@ -130,13 +128,13 @@ var instruction_taskSeparate_color = {
     this.stimulus = `
     <div style="text-align: left; color: white; padding: 10px"> 
       <p>现在是颜色判断</p>
-      <p>您需要<span style="font-weight: bold">忽略点的形状</span>并判断哪种颜色（红色或蓝色）的数量更多:</p >
+      <p>您需要<span style="font-weight: bold">忽略点的形状</span>并判断哪种颜色（红色或蓝色）的数量更多</p >
+      <p>散点图下方会显示"红"和"蓝"的文字标签，请根据文字位置按对应的键</p>
         <ul>
             <li>大多数为<span style="color: hsl(0, 50%, 50%)">红色</span>，请按对应文字标签所在侧的键（左侧按<span style="font-weight: bold">"F"键</span>，右侧按<span style="font-weight: bold">"J"键</span>）</li>
             <li>大多数为<span style="color: hsl(225, 50%, 50%)">蓝色</span>，请按对应文字标签所在侧的键（左侧按<span style="font-weight: bold">"F"键</span>，右侧按<span style="font-weight: bold">"J"键</span>）</li>
           </ul>
-      <p>散点图下方会显示"红"和"蓝"的文字标签，请根据文字位置按对应的键</p>
-      <p>准备好后请按空格键开始</p>
+      <p>您需要完成两组判断，准备好后请按空格键开始</p>
     </div>`
   },
   response_ends_trial: true,
@@ -206,7 +204,7 @@ let single_trial_shape = {
   dot_shape: function () { return jsPsych.timelineVariable("dot_shape") },
   choices: ["f", "j"],
   correct_choice: function () { return jsPsych.timelineVariable("correct_choice") },
-  dot_radius: 4.5,
+  dot_radius: 5,
   move_distance: 2.2,
   coherence: 0,
   coherent_direction: 0,
@@ -269,7 +267,7 @@ let single_trial_color = {
   dot_shape_ratio: 0.5,
   choices: ["f", "j"],
   correct_choice: function () { return jsPsych.timelineVariable("correct_choice") },
-  dot_radius: 4.5,
+  dot_radius: 5,
   move_distance: 2.2,
   coherence: 0,
   coherent_direction: 0,
