@@ -393,7 +393,7 @@
         {
           type: "checkbox",
           title: "您觉得实验设置中影响任务表现的主要障碍是什么？",
-          choices: ["刺激细节难以看清", "看清楚了但难以辨别", "难以集中注意力", "每段任务的时间太长，容易疲劳", "整个实验的时间太长，精力不足", "没有时间"],
+          choices: ["刺激细节难以看清", "看清楚了但难以辨别", "难以集中注意力", "每段任务的时间太长，容易疲劳", "整个实验的时间太长，精力不足", "没有时间作答", "无"],
           isRequired: true,
           showNoneItem: false,
           hasOther: true,
@@ -403,7 +403,7 @@
         {
           type: "checkbox",
           title: "您觉得实验环境中影响任务表现的因素有什么？",
-          choices: ["噪音干扰", "其他人在附近", "电脑屏幕上有其他窗口出现、消息弹窗", "腾讯会议悬浮窗口分心", "屏幕亮度/大小不合适"],
+          choices: ["噪音干扰", "其他人在附近", "电脑屏幕上有其他窗口出现、消息弹窗", "腾讯会议悬浮窗口分心", "屏幕亮度/大小不合适", "无"],
           isRequired: true,
           showNoneItem: false,
           hasOther: true,
@@ -541,7 +541,7 @@
     type: jsPsychSurvey,
     survey_json: {
       showQuestionNumbers: true,
-      title: "事后动机问卷",
+      title: "事后动机调查",
       completeText: "提交",
       elements: [
         {
@@ -612,10 +612,10 @@
   //---------整个实验的时间线---------
 
   main_timeline = [preload, fullScreen,  //card, resized_stimulus, 
-    information, color_test, 
-    beginning, 
-    getThreshold, 
-    assign_group, 
+    //information, color_test, 
+    //beginning, 
+    //getThreshold, 
+    //assign_group, 
     survey_isMatch, survey_strategy, survey_motivation, end]
 
   jsPsych.run(main_timeline);
