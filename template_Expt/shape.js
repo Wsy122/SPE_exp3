@@ -212,7 +212,7 @@ var instruction_match_practice = {
         <h3 style="text-align: center; font-size: 30px; margin: 10px;">学习阶段</h3>
         <p>大多数点为<span style="font-weight: bold">圆形</span>代表<span style="font-weight: bold">你自己</span>，为<span style="font-weight: bold">正方形</span>代表<span style="font-weight: bold">他人</span>。</p >
         <p>您需要判断 <span style="font-weight: bold">散点图的主要形状与文字是否匹配</span>，<span style="color: hsl(135, 50%, 50%);">匹配</span> 按 <span style="color: hsl(135, 50%, 50%);">"F" 键</span>；<span style="color: red;">不匹配</span> 按 <span style="color: red;">"J" 键</span></p >
-        <p>正确率达到 90% 及以上才能进入正式任务 </p >
+        <p>您需要完成两组学习，第一组没有正确率要求，第二组要求正确率达到 90% 及以上才能进入正式任务 </p >
         <p>请把左手食指放在 "F" 键上，右手食指放在 "J" 键上</p >
         <p>请按下空格键开始练习</p >
       </div>`;
@@ -222,7 +222,7 @@ var instruction_match_practice = {
         <h3 style="text-align: center; font-size: 30px; margin: 10px;">学习阶段</h3>
         <p>大多数点为<span style="font-weight: bold">正方形</span>代表<span style="font-weight: bold">你自己</span>，为<span style="font-weight: bold">圆形</span>代表<span style="font-weight: bold">他人</span>。</p >
         <p>您需要判断 <span style="font-weight: bold">散点图的主要形状与文字是否匹配</span>，<span style="color: hsl(135, 50%, 50%);">匹配</span> 按 <span style="color: hsl(135, 50%, 50%);">"F" 键</span>；<span style="color: red;">不匹配</span> 按 <span style="color: red;">"J" 键</span></p >
-        <p>正确率达到 90% 及以上才能进入正式任务 </p >
+        <p>您需要完成两组学习，第一组没有正确率要求，第二组要求正确率达到 90% 及以上才能进入正式任务 </p >
         <p>请把左手食指放在 "F" 键上，右手食指放在 "J" 键上</p >
         <p>请按下空格键开始练习</p >
       </div>`;

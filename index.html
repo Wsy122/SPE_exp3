@@ -139,7 +139,7 @@
           <p>为充分保障您的权利，请确保您已经知晓并同意《参与实验同意书》以及《数据公开知情同意书》，</p>
           <p>如果您未见过上述内容，请咨询实验员 ，</p>
           <p>如果您选择继续实验，则表示您已经清楚两份知情同意书的内容并同意 。</p>
-          <p>在整个实验中，您需要完成三项任务，具体的任务要求会在后面说明 ，</p>
+          <p>在整个实验中，您需要完成三项任务，在此之前会有一个简短的测试与学习，具体的任务要求会在后面说明 ，</p>
           <p>请按空格键进入实验</p >
       </div>`,
     on_start: function () {
@@ -612,10 +612,10 @@
   //---------整个实验的时间线---------
 
   main_timeline = [preload, fullScreen,  //card, resized_stimulus, 
-    //information, color_test, 
-    //beginning, 
-    //getThreshold, 
-    //assign_group, 
+    information, color_test, 
+    beginning, 
+    getThreshold, 
+    assign_group, 
     survey_isMatch, survey_strategy, survey_motivation, end]
 
   jsPsych.run(main_timeline);
