@@ -46,7 +46,7 @@ var getThreshold = {
 let currentCycleMunShape = 0;
 let shapeStage = 0;
 let index
-let initial_difficulty_shape_easy = 0.7;
+let initial_difficulty_shape_easy = 0.8;
 
 // 初始化保存计数（仅 easy）
 const shapeSaveCounts = { easy: 0 };
