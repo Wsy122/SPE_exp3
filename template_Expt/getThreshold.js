@@ -46,7 +46,7 @@ var getThreshold = {
 let currentCycleMunShape = 0;
 let shapeStage = 0;
 let index
-let initial_difficulty_shape_easy = 0.8;
+let initial_difficulty_shape_easy = 0.75;
 
 // 初始化保存计数（仅 easy）
 const shapeSaveCounts = { easy: 0 };
@@ -161,8 +161,8 @@ var fixation = {
 
 // 形状Staircase（StaircaseShape1/StaircaseShape2）
 const StaircaseShape1 = {
-  max: 0.63,
-  min: 0.70,
+  max: 0.7,
+  min: 0.8,
   difficultyType: 'easy',
   get: () => initial_difficulty_shape_easy,
   set: (value) => {
